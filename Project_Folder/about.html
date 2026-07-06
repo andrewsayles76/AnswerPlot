@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GeoCrop</title>
+   
+<!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  
+  <!-- Make sure you put the leaflet map library AFTER Leaflet's CSS --> 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+       
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="about.css" />
+  
+</head>
+    
+<body class="bg-light">
+      
+<!-- Top bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top">
+  <div class="container-fluid">
+    <span class="navbar-brand fw-semibold">GeoCrop</span>
+    <a style="background-color: rgb(40,40,40)"> </a>
+    
+    <!-- Navbar toggler for mobile (puts dropdowns in a button-->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links (formats topbar)-->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav">
+        
+        <!-- Home button -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="user_home.html">Home</a>
+        </li>
+        
+        <!-- About -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="about.html">About</a>
+        </li>
+        
+        <!-- Contact -->
+        <!--
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="contact.html">Contact</a>
+        </li> 
+        -->
+
+        <!-- Submit Field button (user draws out field - I'll recieve area(acre)) -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="submitField.html">Submit Field</a>
+        </li>
+
+        <!-- Properties button with dropdown (Users submitted farmland) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Properties
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+            <li><a class="dropdown-item" href="field1.html">South Grandpa Field</a></li>
+              <li><a class="dropdown-item" href="barns_field.html">Barns Field</a></li>
+            <!-- cont. list with more properties -->
+          </ul>
+        </li>
+      </ul>
+
+        <!-- Products button with dropdown (future products (soil sampling, drone imagery/spraying)) -->
+        <!--
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="products.html" id="productsDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Products
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+            <li><a class="dropdown-item" href="products/product1.html">Product 1</a></li>
+            <li><a class="dropdown-item" href="products/product2.html">Product 2</a></li>
+          </ul>
+        </li>
+      </ul>
+        -->
+
+        <!-- Search bar (search for users fields, products, or any other function)-->
+        <!--
+      <form class="d-flex ms-auto" role="search" action="search_results.html" method="get">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+        -->
+    </div>
+  </div>
+</nav>
+
+    
+    <div id="description">
+            <h5> What is This?</h5>
+            <p> 
+              The purpose of this project is to give a farmer an aerial overview of their cropland. 
+              This page uses Soil Sampling, Drone imagery, and internet API (Application Programming Interface) to create a deeper understanding of cropland.
+              These advanced practices reduce crop scouting time by providing a simplified assessment and visual of favorability.
+            </p>
+      <hr style="border-color: #777">
+            <h5> Where to Start?</h5>
+            <ul> 
+              <li>Start by selecting the "Submit a Field" in the navigation bar. </li>
+              <li> This will bring you to a site where you can create a polygon around a single cropland using the tools on the left hand side of the screen. </li>
+             <li> After creating your field polygon you can select finish also found on the left. </li>
+              <li>Then a pop-up will appear asking you to name your selected field.</li>
+             <li> The created polygon is now downloaded with your given name.</li>
+              <li>Next you would send that downloaded file to me then I would perform my services.</li>       
+              <ul>
+                <li>Soil Sampling</li>
+                <li>Drone Imagery/Analysis</li>
+                <li>Cropland Service Recommendations</li>
+              </ul></ul>
+            <ul>
+              <li>These services will be found and uploaded as individual fields. </li>
+              <li>Your field (once uploaded) can be found within the "Home" or "Properties" tab.</li>
+              <li>Soil sample data, Drone imagery/analysis, soil moisture and field size (acres) will all be determined and presented within the individual field page.</li>
+            </ul>
+       <hr style="border-color: #777">
+             <h5> What to do with this Information?</h5>
+              <p>
+                To fully understand the functionality of your cropland you must know what is currently happening. 
+                Soil Sample data will show chemical necessities within your soil - allowing you to plan and adjust based on chemical needs.
+                Drone imagery will be taking throughout the growing season - this provides an up-to-date bird eyes view of your cropland.
+                Drone NDVI (Normalized Difference Vegetation Index) analysis will show plant health through a invisible near-infrared spectrum of light - providing a advanced approach to crop scouting and early detection.
+                Soil moisture data and field area (acres) will be present for the entire field.
+              </p>
+            <hr style="border-color: #777">
+             <h5>Data Credits:</h5>
+                <p><a href="https://open-meteo.com/en/docs?hourly=temperature_2m,wind_speed_10m,precipitation">Soil Moisture Weather API</a></p>
+                <ul>
+                  <li>This is the source of soil moisture data</li>
+                </ul>
+            <hr style="border-color: #777">
+              <h5>Methods</h5>
+              <ul>
+                <li>Collect/gather data - Drone Imagery, Soil Sample data, Soil moisture data, and use "Submit Field" tool to gather GeoJSON</li>
+                <li>Start processing drone imagerying to collect NDVI</li>
+                <li>Bring Drone Imagery product, GeoJSON, and Soil Sample data into ArcGIS Pro</li>
+                  <ul>
+                    <li>Clip Drone Imagery to GeoJSON Field Boundary</li>
+                    <li>Use GeoJSON and fishnet tool to generate Soil Sample locations</li>
+                    <li>Join Soil Sample locations to Soil Sample data</li>
+                  </ul>
+                <li>Export rasters and vectors into a folder and upload the files to GitHub</li>
+                <li>Update coordinates for Soil Moisture API</li>
+              </ul>
+                <img src="final_workflow.png" alt="final workflow of project" style="width: 100%; border-radius: 6px; margin: 10px 0;">
+          <hr style="border-color: #777">
+            <h5>Limitations:</h5>
+              <p>Processing large raster files such as NDVI take time and cannot be supported by GitHub (file size limited to 25MB). 
+                  I will need to learn more about cloud storage and fetching to fully demonstrate this idea. This project also relies on ArcGIS Pro and Pix4D
+                  for processing data. Without these softwares the dataset would not be complete.
+              </p>
+            <h5>Author Credits:</h5>
+              <p>Webmap made by: Andrew Sayles</p>
+            <h5>Basemap Attributions:</h5>
+              <p>'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'</p>
+              <p>'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'</p>
+      <hr style="border-color: #777">
+            <h5>Questions Regarding this Webpage?</h5>
+            <p>
+              Contact me at: andrewsayles76@gmail.com
+            </p>
+  </div>
+    
+<!-- more about the maps and how to use them What datasets did you use? (name + source)
+// Key processing steps you performed (cleaning, joins, geocoding, simplification, CRS decisions)
+// How you delivered data to the webmap (GeoJSON, service/API, tiles—whichever applies)
+// Significance and what works well
+// Strengths (design, clarity, performance, usefulness)
+// Limitations (data gaps, performance constraints, unfinished features)
+// Next steps for final submission (top 2–3 improvements) -->
+  
+  
+</body>
+</html>
