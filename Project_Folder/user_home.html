@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Answer Plot Explorer</title>
+   
+<!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  
+  <!-- Make sure you put the leaflet map library AFTER Leaflet's CSS --> 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+       
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="user_home.css" />
+  
+</head>
+    
+<body class="bg-light">
+      
+       <!-- Top bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top">
+  <div class="container-fluid">
+    <span class="navbar-brand fw-semibold">Answer Plot Explorer</span>
+    
+    <!-- Navbar toggler for mobile (puts dropdowns in a button-->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links (formats topbar)-->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav">
+        
+        <!-- Home button -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="user_home.html">Home</a>
+        </li>
+        
+        <!-- About -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="about.html">About</a>
+        </li>
+        
+        <!-- Contact -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="contact.html">Contact</a>
+        </li> 
+       
+
+        <!-- Properties button with dropdown (Users submitted farmland) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Answer Plots
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+            <li><a class="dropdown-item" href="field1.html">Watertown</a></li>
+              <li><a class="dropdown-item" href="barns_field.html">Lake Vermillion</a></li>
+            <!-- cont. list with more properties -->
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Info card button for MOBILE -->
+<div class="col-12 d-lg-none mb-4">
+  <a class="card dashboard-card text-decoration-none bg-black text-white w-100 sticky-top" 
+     data-bs-toggle="offcanvas" 
+     href="#infoSidebar" 
+     role="button">
+    <div class="card-body text-center">
+      <h5 class="card-title">Cropland Data</h5>
+      <p class="card-text">Tap to view details</p>
+    </div>
+  </a>
+</div>
+  
+    <!-- Page layout -->
+  <div class="container-fluid">
+  <div class="row g-2 py-3">
+  
+  <!--Home name (title)-->
+    <h4>Dashboard</h4>
+    
+<!--map selection-->
+    <div class="container mt-4 position-relative">
+        <div class="row">
+    <!-- Main content: cards on the left -->
+    <div class="col-lg-9">
+      <div class="row g-4">
+    <!-- Card 1 -->
+    <div class="col-md-4"> <!-- go to col-sm-6 if card doesnt fit on screen -->
+      <a href="Watertown.html" class="text-decoration-none text-dark">
+        <div class="card h-100">
+          <img src="field_maps/Grandpas_south_field.png" class="card-img-top" alt="Page 1 Snapshot">
+          <div class="card-body">
+            <h5 class="card-title">Watertown Answer Plot</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+    <!-- Card 2 -->
+    <div class="col-md-4"> <!-- go to col-sm-6 if card doesnt fit on screen -->
+      <a href="LakeVer.html" class="text-decoration-none text-dark">
+        <div class="card h-100">
+          <img src="field_png/LakeVer.png" class="card-img-top" alt="Page 2 Snapshot">
+          <div class="card-body">
+            <h5 class="card-title">Lake Vermillion Answer Plot</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Repeat for cards 2–9 -->
+</div>
+</div>
+</div>
+</div>
+
+<!-- Info panel column -->
+    <!-- empty left space -->
+    <div id="infoColumn" class="position-absolute top-1 end-0 p0" style="width: 25%; z-index: 10;">
+      <div class="col-lg-12 collapse d-lg-block sticky-top">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-title mb-3">Answer Plot Purpose</h3>
+                <p><strong>...</strong> ... </p>
+
+            
+<!--info slide out panel-->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="infoSidebar">
+
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Cropland Data</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <h3 class="card-title mb-3">Cropland Data</h3>
+    <p><strong>Total Acres:</strong> (Read how many arces submitted by user) </p>
+    <p><strong>Total Estimated Yield:</strong> (From soil sample data, NDVI, and previous yield data) </p>
+    <p><strong>Total Predominant Soil Type:</strong> (Most present soil type) </p>
+    <p><strong>Personal Notes:</strong> this is the users personal overall field information. This is the main menu with all of the field to select from. </p>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+                  
+        </div>
+    </div>
+      </div>
+   </body>
+</html>
+  
+
+
+<!--product tab have about products (whats in it)-->
