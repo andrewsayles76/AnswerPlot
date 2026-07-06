@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project GeoCrop</title>
+   
+<!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  
+  <!-- Make sure you put the leaflet map library AFTER Leaflet's CSS --> 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+  <!--data-->
+  <script src="field.js"></script>
+   
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="field.css" />
+  
+    </head>
+    
+    <body class="bg-light">
+      
+       <!-- Top bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom sticky-top">
+  <div class="container-fluid">
+    <span class="navbar-brand fw-semibold">Project GeoCrop</span>
+    
+    <!-- Navbar toggler for mobile (puts dropdowns in a button-->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links (formats topbar)-->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav">
+        
+        <!-- Home button -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="home.html">Home</a>
+        </li>
+        
+        <!-- Submit Field button (user draws out field - I'll recieve area(acre)) -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="submitField.html">Submit Field</a>
+        </li>
+
+        <!-- Properties button with dropdown (Users submitted farmland) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Properties
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+            <li><a class="dropdown-item" href="properties/fieldName1.html">Field Name1</a></li>
+            <li><a class="dropdown-item" href="properties/fieldName2.html">Field Name2</a></li>
+            <li><a class="dropdown-item" href="properties/fieldName3.html">Field Name3</a></li>
+          </ul>
+        </li>
+
+        <!-- Products button with dropdown (future products (soil sampling, drone imagery/spraying)) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fw-semibold" href="products.html" id="productsDropdown" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            Products
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+            <li><a class="dropdown-item" href="products/product1.html">Product 1</a></li>
+            <li><a class="dropdown-item" href="products/product2.html">Product 2</a></li>
+          </ul>
+        </li>
+      </ul>
+      
+        <!-- Search bar (search for users fields, products, or any other function)-->
+      <form class="d-flex ms-auto" role="search" action="search_results.html" method="get">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+   
+    <!-- Page layout -->
+  <div class="container-fluid">
+  <div class="row g-3 py-3">
+
+    <!-- Map column -->
+    <div class="col-lg-9">
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <div id="map" aria-label="Interactive map"></div>
+        </div>
+      </div>
+    </div>
+
+
+ <!-- Info panel column -->
+      <div class="col-lg-3">
+        <div class="card shadow-sm bg-black text-white">
+          <div class="card-body">
+            <h5 class="card-title mb-3">*(Users)* Properties</h5>
+
+    <p><strong>Acres:</strong> (Read how many arces submitted by user) </p>
+    <p><strong>Estimated Yield:</strong> (From soil sample data, NDVI, and previous yield data) </p>
+    <p><strong>Troubled Locations:</strong> (Spots in the cropland that are not favorable - during growth or predicted - insects, fungi, water stress, poor soil) </p>
+    <p><strong>Predominant Soil Type:</strong> (Most present soil type) </p>
+    <p><strong>Personal Notes:</strong> this is the users personal overall field information. This is the main menu with all of the field to select from. </p>
+    
+  
+   </div>
+    </div>
+  </div>
+    
+  <script src="field.js"></script>
+    
+     </div>
+   </div>
+   </body>
+</html>
