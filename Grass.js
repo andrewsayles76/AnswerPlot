@@ -44,7 +44,7 @@ L.control.locate().addTo(map);
 // historical weather?
 
 // Load GrassDate1 - assigned to a variable
-const GrassDate1 = fetch('field_rasters/LakeVer/6152026/Demo/Grass/61526_Grass.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const GrassDate1 = fetch('field_rasters/LakeVer/622026/Demo/Grass/6226_Grass.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {
@@ -67,7 +67,7 @@ const GrassDate1 = fetch('field_rasters/LakeVer/6152026/Demo/Grass/61526_Grass.t
   .catch(err => console.log('GrassDate1 error:', err));
 
 // Load GrassDate2 - assigned to a variable
-const GrassDate2 = fetch('field_rasters/LakeVer/622026/Demo/Grass/6226LV_Grass.TIF') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const GrassDate2 = fetch('field_rasters/LakeVer/6152026/Demo/Grass/61526_Grass.TIF') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {

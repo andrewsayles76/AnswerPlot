@@ -1,0 +1,119 @@
+/* Page + full-screen map - Make the page tall enough for a full-screen map*/
+html, body {
+  height: 100%;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1000;
+}
+
+/* Basic styling for the whole page */
+body {
+  margin: 0;
+  background-color: whitesmoke;
+  font-family: "lato", sans-serif;
+  color: #3d3d3d;
+}
+
+
+
+/* Make the map fill the entire browser window */
+#map {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+}
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+    Background: #000000;
+    color: #ffffff;
+}
+
+.leaflet-top.leaflet-left,
+.leaflet-top.leaflet-right {
+  top: 60px;
+}
+
+/*Style the description panel (overlay box)*/
+#description {
+	font-size: 1rem;
+  font-style: normal;
+  color: white;
+  position: fixed;
+  left: 5px;
+  bottom: 5px;
+  width: 307px;
+   height: auto;
+  max-width: calc(100vw - 20px);
+  padding: 0 9px;
+  padding-top: 9px;
+  background: rgb(40, 40, 40);
+  border: 1px solid #777;
+  border-radius: 6px;
+  z-index: 800;
+}
+
+.legend {
+  background: rgb(40, 40, 40);
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #777;
+  font-size: 0.9rem;
+  min-width: 180px;
+  z-index: 800;
+}
+
+.legend h4 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.legend p {
+  margin: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* Tab that sticks to the right side */
+.sidebar-tab {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background-color: rgb(40, 40, 40);
+  color: white;
+  border: none;
+  padding: 12px 8px;
+  border-radius: 6px 0 0 6px;
+  writing-mode: vertical-rl;
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: fit-content;   
+  height: auto;         
+  display: block;       
+}
+
+
+
+/* Offcanvas styling */
+.offcanvas {
+  background-color: rgb(40, 40, 40);
+  color: white;
+}
+

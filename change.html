@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Raster Change Detection</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js"></script>
+<style>
+  :root{
+    --bg: #12161b;
+    --panel: #1a2027;
+    --panel-2: #212932;
+    --border: #2b3440;
+    --text: #e7eaee;
+    --text-dim: #8a95a3;
+    --loss: #e8604d;
+    --gain: #45c2a3;
+    --neutral: #3a4350;
+    --amber: #f0b64c;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  @font-face{font-family:'Space Grotesk';src:local('Space Grotesk');}
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--text); font-family:var(--body); }
+  #app { display:flex; height:100vh; width:100vw; }
+
+  /* ---- Sidebar ---- */
+  #sidebar {
+    width: 340px; min-width:340px; background:var(--panel);
+    border-right:1px solid var(--border); display:flex; flex-direction:column;
+    overflow-y:auto;
+  }
+  .brand { padding:20px 20px 14px; border-bottom:1px solid var(--border); }
+  .brand h1 { font-family:var(--display); font-size:18px; margin:0 0 4px; letter-spacing:.2px; }
+  .brand p { margin:0; font-size:12px; color:var(--text-dim); line-height:1.5; }
+
+  .section { padding:18px 20px; border-bottom:1px solid var(--border); }
+  .section h2 {
+    font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:1.2px;
+    color:var(--text-dim); margin:0 0 12px; font-weight:600;
+  }
+
+  .filerow { margin-bottom:12px; }
+  .filerow label { display:block; font-size:12.5px; color:var(--text-dim); margin-bottom:6px; }
+  .filebtn {
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--panel-2); border:1px solid var(--border); border-radius:6px;
+    padding:9px 12px; cursor:pointer; font-size:12.5px; color:var(--text);
+    transition:border-color .15s;
+  }
+  .filebtn:hover { border-color:var(--amber); }
+  .filebtn.loaded { border-color:var(--gain); color:var(--gain); }
+  .filebtn input { display:none; }
+  .filebtn .chip { font-family:var(--mono); font-size:10.5px; color:var(--text-dim); }
+
+  .slider-row { margin-bottom:14px; }
+  .slider-row .label-line {
+    display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-dim); margin-bottom:8px;
+  }
+  .slider-row .label-line span.val { font-family:var(--mono); color:var(--amber); }
+  input[type="range"] {
+    width:100%; -webkit-appearance:none; height:3px; background:var(--border); border-radius:2px; outline:none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+    background:var(--amber); cursor:pointer; border:2px solid var(--panel);
+  }
+
+  #runBtn {
+    width:100%; padding:11px; border-radius:6px; border:none; cursor:pointer;
+    background:var(--amber); color:#1a1400; font-weight:600; font-size:13px;
+    font-family:var(--body); letter-spacing:.2px;
+  }
+  #runBtn:disabled { background:var(--neutral); color:var(--text-dim); cursor:not-allowed; }
+  #runBtn:not(:disabled):hover { filter:brightness(1.08); }
+
+  #status { font-family:var(--mono); font-size:11.5px; color:var(--text-dim); margin-top:10px; min-height:14px; line-height:1.5; }
+  #status.err { color:var(--loss); }
+
+  /* ---- Legend ---- */
+  .legend-bar { display:flex; height:10px; border-radius:2px; overflow:hidden; margin-bottom:8px; }
+  .legend-bar div { flex:1; }
+  .legend-labels { display:flex; justify-content:space-between; font-size:10.5px; font-family:var(--mono); color:var(--text-dim); }
+
+  /* ---- Histogram ---- */
+  #hist { width:100%; height:56px; display:block; }
+
+  /* ---- Stats ---- */
+  .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .stat { background:var(--panel-2); border:1px solid var(--border); border-radius:6px; padding:10px 12px; }
+  .stat .n { font-family:var(--mono); font-size:18px; font-weight:600; }
+  .stat .l { font-size:10.5px; color:var(--text-dim); margin-top:2px; text-transform:uppercase; letter-spacing:.5px; }
+  .stat.loss .n { color:var(--loss); }
+  .stat.gain .n { color:var(--gain); }
+
+  #opacityRow { margin-top:14px; }
+
+  .footnote { font-size:11px; color:var(--text-dim); line-height:1.6; padding:14px 20px; }
+
+  #map { flex:1; background:#0d1014; }
+  .leaflet-container { background:#0d1014; }
+
+  #dropHint {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:var(--text-dim); font-family:var(--mono); font-size:13px; pointer-events:none;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar">
+    <div class="brand">
+      <h1>NDVI Change Detection</h1>
+      <p>Loads two NDVI GeoTIFFs entirely in your browser and computes pixel-wise vegetation change — no ArcGIS extension required.</p>
+    </div>
+
+    <div class="section">
+      <h2>Inputs</h2>
+      <div class="filerow">
+        <label>Earlier NDVI</label>
+        <div class="filebtn" id="beforeBtn">
+          <span id="beforeLabel">Choose .tif file&hellip;</span>
+          <span class="chip" id="beforeChip"></span>
+        </div>
+        <input type="file" id="beforeInput" accept=".tif,.tiff">
+      </div>
+      <div class="filerow">
+        <label>Later NDVI</label>
+        <div class="filebtn" id="afterBtn">
+          <span id="afterLabel">Choose .tif file&hellip;</span>
+          <span class="chip" id="afterChip"></span>
+        </div>
+        <input type="file" id="afterInput" accept=".tif,.tiff">
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Parameters</h2>
+      <div class="slider-row">
+        <div class="label-line"><span>NDVI change threshold</span><span class="val" id="threshVal">&mdash;</span></div>
+        <input type="range" id="threshSlider" min="0" max="1" value="0.1" step="0.01" disabled>
+      </div>
+      <button id="runBtn" disabled>Load rasters first</button>
+      <div id="status"></div>
+    </div>
+
+    <div class="section" id="legendSection" style="display:none;">
+      <h2>Legend</h2>
+      <div class="legend-bar">
+        <div style="background:var(--loss)"></div>
+        <div style="background:var(--neutral)"></div>
+        <div style="background:var(--gain)"></div>
+      </div>
+      <div class="legend-labels"><span>Vegetation loss</span><span>No significant change</span><span>Vegetation gain</span></div>
+      <canvas id="hist" style="margin-top:14px;"></canvas>
+      <div id="opacityRow">
+        <div class="label-line" style="margin-bottom:8px;"><span>Overlay opacity</span><span class="val" id="opacityVal">85%</span></div>
+        <input type="range" id="opacitySlider" min="10" max="100" value="85" step="5">
+      </div>
+    </div>
+
+    <div class="section" id="statsSection" style="display:none;">
+      <h2>Summary</h2>
+      <div class="stat-grid">
+        <div class="stat loss"><div class="n" id="statLoss">&mdash;</div><div class="l">Vegetation loss</div></div>
+        <div class="stat gain"><div class="n" id="statGain">&mdash;</div><div class="l">Vegetation gain</div></div>
+        <div class="stat"><div class="n" id="statNoChange">&mdash;</div><div class="l">Stable</div></div>
+        <div class="stat"><div class="n" id="statPixels">&mdash;</div><div class="l">Pixels compared</div></div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      Assumes both rasters share the same extent, resolution, and grid alignment (same sensor/date processing recommended), and are in a geographic CRS (EPSG:4326). If your data is in a projected CRS, reproject to WGS84 first. If your NDVI is stored as scaled integers (e.g. Landsat Collection 2 scales NDVI by 10000) rather than floats from -1 to 1, the threshold slider auto-scales to your data's actual range once both files load, so this works either way.
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+
+<script>
+let map = L.map('map', { zoomControl: true, attributionControl: true }).setView([20,0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let beforeRaster = null, afterRaster = null, diffArray = null, overlayLayer = null;
+let rasterMeta = null;
+
+function setFileChip(kind, file) {
+  document.getElementById(kind + 'Label').textContent = file.name;
+  document.getElementById(kind + 'Chip').textContent = (file.size/1024/1024).toFixed(1) + ' MB';
+  document.getElementById(kind + 'Btn').classList.add('loaded');
+}
+
+function setStatus(msg, isErr) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = isErr ? 'err' : '';
+}
+
+async function readRaster(file) {
+  const buf = await file.arrayBuffer();
+  const tiff = await GeoTIFF.fromArrayBuffer(buf);
+  const image = await tiff.getImage();
+  const width = image.getWidth();
+  const height = image.getHeight();
+  const bbox = image.getBoundingBox(); // [minX, minY, maxX, maxY]
+  const rasters = await image.readRasters();
+  const data = rasters[0];
+  let nodata = null;
+  try {
+    const gd = image.getGDALNoData();
+    if (gd !== null && gd !== undefined) nodata = gd;
+  } catch(e) {}
+  return { data, width, height, bbox, nodata };
+}
+
+document.getElementById('beforeBtn').addEventListener('click', () => document.getElementById('beforeInput').click());
+document.getElementById('afterBtn').addEventListener('click', () => document.getElementById('afterInput').click());
+
+document.getElementById('beforeInput').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  setStatus('Reading before raster...');
+  try {
+    beforeRaster = await readRaster(f);
+    setFileChip('before', f);
+    checkReady();
+    setStatus('');
+  } catch (err) {
+    setStatus('Failed to read before raster: ' + err.message, true);
+  }
+});
+
+document.getElementById('afterInput').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  setStatus('Reading after raster...');
+  try {
+    afterRaster = await readRaster(f);
+    setFileChip('after', f);
+    checkReady();
+    setStatus('');
+  } catch (err) {
+    setStatus('Failed to read after raster: ' + err.message, true);
+  }
+});
+
+function checkReady() {
+  const btn = document.getElementById('runBtn');
+  const slider = document.getElementById('threshSlider');
+  if (beforeRaster && afterRaster) {
+    if (beforeRaster.width !== afterRaster.width || beforeRaster.height !== afterRaster.height) {
+      setStatus('Dimension mismatch: before is ' + beforeRaster.width + 'x' + beforeRaster.height +
+        ', after is ' + afterRaster.width + 'x' + afterRaster.height +
+        '. Resample both to the same grid before comparing.', true);
+      btn.disabled = true;
+      slider.disabled = true;
+      return;
+    }
+    btn.disabled = false;
+    slider.disabled = false;
+    btn.textContent = 'Run change detection';
+    autoScaleThreshold();
+    setStatus('Both rasters loaded (' + beforeRaster.width + '\u00d7' + beforeRaster.height + '). Threshold auto-scaled to your data\u2019s range \u2014 adjust as needed and run.');
+  }
+}
+
+document.getElementById('threshSlider').addEventListener('input', (e) => {
+  document.getElementById('threshVal').textContent = formatThresh(e.target.value);
+});
+document.getElementById('threshVal').textContent = formatThresh(document.getElementById('threshSlider').value);
+
+function formatThresh(v) {
+  const n = parseFloat(v);
+  return n < 1 ? n.toFixed(2) : n.toFixed(3);
+}
+
+function sampleAbsMaxDiff(before, after) {
+  let maxAbs = 0;
+  const n = before.length;
+  const step = Math.max(1, Math.floor(n / 20000)); // sample up to ~20k points for speed
+  for (let i = 0; i < n; i += step) {
+    const d = Math.abs(after[i] - before[i]);
+    if (Number.isFinite(d) && d > maxAbs) maxAbs = d;
+  }
+  return maxAbs;
+}
+
+function autoScaleThreshold() {
+  const maxAbs = sampleAbsMaxDiff(beforeRaster.data, afterRaster.data);
+  const sliderMax = maxAbs > 0 ? maxAbs : 1;
+  const slider = document.getElementById('threshSlider');
+  const step = sliderMax / 200;
+  const defaultVal = sliderMax * 0.15;
+  slider.min = 0;
+  slider.max = sliderMax;
+  slider.step = step;
+  slider.value = defaultVal;
+  document.getElementById('threshVal').textContent = formatThresh(defaultVal);
+}
+
+document.getElementById('runBtn').addEventListener('click', runChangeDetection);
+document.getElementById('opacitySlider').addEventListener('input', (e) => {
+  document.getElementById('opacityVal').textContent = e.target.value + '%';
+  if (overlayLayer) overlayLayer.setOpacity(e.target.value / 100);
+});
+
+function computeDiffStats(diff, nPixels) {
+  let min = Infinity, max = -Infinity;
+  for (let i = 0; i < nPixels; i++) {
+    const v = diff[i];
+    if (v === null || Number.isNaN(v)) continue;
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  return { min, max };
+}
+
+function drawHistogram(diff, threshold, nPixels) {
+  const canvas = document.getElementById('hist');
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 300, h = 56;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0,0,w,h);
+
+  const bins = 40;
+  const counts = new Array(bins).fill(0);
+  const { min, max } = computeDiffStats(diff, nPixels);
+  const range = (max - min) || 1;
+  for (let i = 0; i < nPixels; i++) {
+    const v = diff[i];
+    if (v === null || Number.isNaN(v)) continue;
+    let b = Math.floor(((v - min) / range) * bins);
+    if (b >= bins) b = bins - 1;
+    if (b < 0) b = 0;
+    counts[b]++;
+  }
+  const maxCount = Math.max(...counts, 1);
+  const barW = w / bins;
+  for (let b = 0; b < bins; b++) {
+    const barH = (counts[b] / maxCount) * (h - 4);
+    const binCenterVal = min + (b + 0.5) * range / bins;
+    let color = 'var(--neutral)';
+    if (binCenterVal <= -threshold) color = getComputedStyle(document.documentElement).getPropertyValue('--loss');
+    else if (binCenterVal >= threshold) color = getComputedStyle(document.documentElement).getPropertyValue('--gain');
+    else color = getComputedStyle(document.documentElement).getPropertyValue('--neutral');
+    ctx.fillStyle = color;
+    ctx.fillRect(b * barW, h - barH, barW - 1, barH);
+  }
+}
+
+function runChangeDetection() {
+  const threshold = parseFloat(document.getElementById('threshSlider').value);
+  const { width, height, bbox } = beforeRaster;
+  const nPixels = width * height;
+  const before = beforeRaster.data, after = afterRaster.data;
+  const nodataB = beforeRaster.nodata, nodataA = afterRaster.nodata;
+
+  diffArray = new Float32Array(nPixels);
+  let lossCount = 0, gainCount = 0, noChangeCount = 0, validCount = 0;
+
+  for (let i = 0; i < nPixels; i++) {
+    if ((nodataB !== null && before[i] === nodataB) || (nodataA !== null && after[i] === nodataA)) {
+      diffArray[i] = NaN;
+      continue;
+    }
+    const d = after[i] - before[i];
+    diffArray[i] = d;
+    validCount++;
+    if (d <= -threshold) lossCount++;
+    else if (d >= threshold) gainCount++;
+    else noChangeCount++;
+  }
+
+  // Render canvas overlay
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  const imgData = ctx.createImageData(width, height);
+
+  const lossColor = hexToRgb(getCssVar('--loss'));
+  const gainColor = hexToRgb(getCssVar('--gain'));
+
+  for (let i = 0; i < nPixels; i++) {
+    const d = diffArray[i];
+    const p = i * 4;
+    if (Number.isNaN(d)) {
+      imgData.data[p+3] = 0;
+      continue;
+    }
+    if (d <= -threshold) {
+      imgData.data[p] = lossColor.r; imgData.data[p+1] = lossColor.g; imgData.data[p+2] = lossColor.b; imgData.data[p+3] = 230;
+    } else if (d >= threshold) {
+      imgData.data[p] = gainColor.r; imgData.data[p+1] = gainColor.g; imgData.data[p+2] = gainColor.b; imgData.data[p+3] = 230;
+    } else {
+      imgData.data[p+3] = 0;
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  const [minX, minY, maxX, maxY] = bbox;
+  const bounds = [[minY, minX], [maxY, maxX]];
+
+  if (overlayLayer) map.removeLayer(overlayLayer);
+  overlayLayer = L.imageOverlay(canvas.toDataURL(), bounds, { opacity: document.getElementById('opacitySlider').value / 100 }).addTo(map);
+  map.fitBounds(bounds);
+
+  document.getElementById('legendSection').style.display = 'block';
+  document.getElementById('statsSection').style.display = 'block';
+  document.getElementById('statLoss').textContent = pct(lossCount, validCount);
+  document.getElementById('statGain').textContent = pct(gainCount, validCount);
+  document.getElementById('statNoChange').textContent = pct(noChangeCount, validCount);
+  document.getElementById('statPixels').textContent = validCount.toLocaleString();
+
+  drawHistogram(diffArray, threshold, nPixels);
+  setStatus('Done. ' + validCount.toLocaleString() + ' valid pixels compared.');
+}
+
+function pct(n, total) {
+  if (!total) return '0%';
+  return ((n/total)*100).toFixed(1) + '%';
+}
+
+function getCssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  const bigint = parseInt(hex, 16);
+  return { r: (bigint>>16)&255, g: (bigint>>8)&255, b: bigint&255 };
+}
+</script>
+</body>
+</html>
