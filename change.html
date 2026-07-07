@@ -229,7 +229,6 @@ document.getElementById('beforeInput').addEventListener('change', async (e) => {
     beforeRaster = await readRaster(f);
     setFileChip('before', f);
     checkReady();
-    setStatus('');
   } catch (err) {
     setStatus('Failed to read before raster: ' + err.message, true);
   }
@@ -243,7 +242,6 @@ document.getElementById('afterInput').addEventListener('change', async (e) => {
     afterRaster = await readRaster(f);
     setFileChip('after', f);
     checkReady();
-    setStatus('');
   } catch (err) {
     setStatus('Failed to read after raster: ' + err.message, true);
   }
