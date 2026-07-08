@@ -22,34 +22,40 @@ var rasterLayers = {};
 // and the plot just keeps the default outline styling.
 // ============================================================
 const plotCharacteristics = {
-  547: { Treatment: "Check",
-         notes: "" },
 
-  548: { Treatment: "Enlist Ultra + Amsol",
-         "Enlist Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+  547: { Treatment: "Liberty Ultra, Enlist One, Cornerstone 5 Plus, Class Act NG, + Strikelock",
+         "Liberty Ultra Rate": "24 oz/ac", "Enlist One Rate": "16 oz/ac", 
+         "Cornerstone 5 Plus Rate": "16 oz/ac", "Class Act NG Rate": "1.25% v/v", "Strikelock Rate": "10 oz/ac",
+         ChangeDetection: "69.3% Vegetation loss" },
 
-  549: { Treatment: "Enlist Ultra + Amsol",
-         "Enlist Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  548: { Treatment: "Liberty Ultra, Enlist One, Cornerstone 5 Plus, + Class Act NG",
+         "Liberty Ultra Rate": "24 oz/ac", "Enlist One Rate": "16 oz/ac", 
+         "Cornerstone 5 Plus Rate": "16 oz/ac", "Class Act NG Rate": "1.25% v/v",
+         ChangeDetection: "89.4% Vegetation loss" },
 
+  549: { Treatment: "Liberty Ultra, Enlist One, + Cornerstone 5 Plus",
+         "Liberty Ultra Rate": "24 oz/ac", "Enlist One Rate": "16 oz/ac", 
+         "Cornerstone 5 Plus Rate": "16 oz/ac",
+         ChangeDetection: "81.7% Vegetation loss" },
+  
   550: { Treatment: "Check",
-         notes: "" },
-  
-  447: { Treatment: "Check",
-         notes: "" },
+         },
 
-  448: { Treatment: "Enlist Ultra + Amsol",
-         "Enlist Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+  447: { Treatment: "Enlist One, Cornerstone 5 Plus, Section Three, + Class Act NG",
+         "Enlist One Rate": "16 oz/ac", "Cornerstone 5 Plus Rate": "16 oz/ac", "Section Three Rate": "3 oz/ac", "Class Act NG": "1.25% v/v",
+         ChangeDetection: "17.5% Vegetation loss" },
 
-  449: { Treatment: "Enlist Ultra + Amsol",
-         "Enlist Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  448: { Treatment: "Enlist One, Cornerstone 5 Plus, Charger Basic, Section Three, + Class Act NG",
+         "Enlist One Rate": "16 oz/ac", "Cornerstone 5 Plus Rate": "16 oz/ac", "Charger Basic": "16 oz/ac", "Section Three Rate": "3 oz/ac", "Class Act NG": "1.25% v/v",
+         ChangeDetection: "33.0% Vegetation loss" },
   
-  450: { Treatment: "Enlist Ultra + Amsol",
-         "Enlist Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  449: { Treatment: "Enlist One, Cornerstone 5 Plus, Section Three, Strikelock, + Class Act NG",
+         "Enlist One Rate": "16 oz/ac", "Cornerstone 5 Plus Rate": "16 oz/ac", "Section Three Rate": "3 oz/ac", "Strikelock": "10 oz/ac","Class Act NG": "1.25% v/v",
+         ChangeDetection: "23.9% Vegetation loss" },
+  
+  450: { Treatment: "Enlist One, Cornerstone 5 Plus, Charger Basic, Section Three, Strikelock, + Class Act NG",
+        "Enlist One Rate": "16 oz/ac", "Cornerstone 5 Plus Rate": "16 oz/ac", "Charger Basic": "16 oz/ac", "Section Three Rate": "3 oz/ac", "Strikelock": "10 oz/ac","Class Act NG": "1.25% v/v",
+         ChangeDetection: "30.7% Vegetation loss" },
 };
 
 // Which GeoJSON property links a feature to plotCharacteristics above

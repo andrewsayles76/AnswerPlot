@@ -21,7 +21,7 @@
     
 <body class="bg-light">
 
-  <!-- Top bar -->
+<!-- Top bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top">
     <div class="container-fluid">
       <span class="navbar-brand fw-semibold">Answer Plot Explorer</span>
@@ -37,19 +37,39 @@
           <li class="nav-item">
             <a class="nav-link fw-semibold" href="about.html">About</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="contact.html">Contact</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
-              Answer Plots
+              Demo Trials
             </a>
             <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
-              <li><a class="dropdown-item" href="field1.html">Watertown</a></li>
-              <li><a class="dropdown-item" href="barns_field.html">Lake Vermillion</a></li>
+              <li><a class="dropdown-item" href="Enlist.html">Enlist Demo</a></li>
+              <li><a class="dropdown-item" href="Liberty.html">Liberty Demo</a></li>
+              <li><a class="dropdown-item" href="Grass.html">Grass Control Demo</a></li>
+              <li><a class="dropdown-item" href="Alfalfa.html">Alfalfa</a></li>
             </ul>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="SummerStoriesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Summer Stories
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="SummerStoriesDropdown">
+                <li><a class="dropdown-item" href="GreenSnap.html">Green Snap</a></li>
+                <li><a class="dropdown-item" href="GreenSnap.html">Section Three Experiment</a></li>
+            </ul>
+          </li>
+          
+        <!-- Change detection -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="change.html">Change Detection</a>
+        </li>
+          
+                    <li class="nav-item">
+            <a class="nav-link fw-semibold" href="contact.html">Contact Me</a>
+          </li>
+          
+
         </ul>
       </div>
     </div>
@@ -64,11 +84,12 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>This map shows the Lake Vermillion trial plots for the Liberty demo. Here's what you need to know:</p>
+          <p>This map shows the Lake Vermillion trial plots for the Soybean Liberty demo. Here's what you need to know:</p>
           <ul>
             <li>Click on any plot square to see its treatment, application rates, and notes.</li>
             <li>Use the layer toggles on the right to switch between NDVI imagery dates.</li>
-            <li>Colors on the NDVI layers reflect plant health, from healthy (green) to stressed (red).</li>
+            <li>Colors on the NDVI layers reflect plant health, from healthy (green) to stressed (red). See Legend for more Information</li>
+            <li>Changed detection between both NDVI images represents herbicide effectiveness as a percentage.</li>
           </ul>
         </div>
         <div class="modal-footer">
@@ -193,12 +214,7 @@
   </div>
         
     
-        <div id="description">
-          
-          <p>Click on the rectangles for treatment information!</p>
 
-            
-  </div>
     
  <script src="Liberty.js"></script>   
         

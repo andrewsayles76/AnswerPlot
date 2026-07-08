@@ -22,44 +22,47 @@ var rasterLayers = {};
 // and the plot just keeps the default outline styling.
 // ============================================================
 const plotCharacteristics = {
-  801: { Treatment: "Check",
-         notes: "" },
+  801: { Treatment: "Section Three",
+        "Section Three Rate": "3 oz/ac",
+         ChangeDetection: "..." },
 
-  802: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+  802: { Treatment: "Section Three + Enlist One",
+         "Section Three Rate": "3 oz/ac", "Enlist One Rate": "2 pt/ac",
+         ChangeDetection: "..." },
 
-  803: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  803: { Treatment: "Section Three + Enlist One",
+         "Section Three Rate": "9 oz/ac", "Enlist One Rate": "2 pt/ac",
+         ChangeDetection: "..." },
 
   804: { Treatment: "Check",
-         notes: "" },
+          },
   
-  805: { Treatment: "Check",
-         notes: "" },
+  805: { Treatment: "Section Three, Enlist One, + Class Act NG",
+         "Section Three Rate": "3 oz/ac", "Enlist One Rate": "2 pt/ac", "Class Act NG Rate": "1.25% ",
+         ChangeDetection: "..." },
 
-  806: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+  806: { Treatment: "Section Three, Enlist One, + Charger Basic",
+         "Section Three Rate": "3 oz/ac", "Enlist One Rate": "2 pt/ac", "Charger Basic Rate": "1 pt/ac",
+         ChangeDetection: "..." },
 
-  807: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  807: { Treatment: "Section Three, Enlist One, + Superlock",
+         "Section Three Rate": "3 oz/ac", "Enlist One Rate": "2 pt/ac", "Superlock": "12 oz/ac",
+         ChangeDetection: "..." },
 
-  808: { Treatment: "Check",
-         notes: "" },
+  808: { Treatment: "Section Three, Enlist One, + Strikelock",
+         "Section Three Rate": "3 oz/ac", "Enlist One Rate": "2 pt/ac", "Strikelock": "10 oz/ac",
+         ChangeDetection: "..." },
   
-  809: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+  809: { Treatment: "Liberty Ultra, Amsol, + Strikelock",
+         "Liberty Ultra": "29 oz/ac", "Amsol": "113 oz/ac", "Strikelock": "10 oz/ac",
+         ChangeDetection: "..." },
 
-  810: { Treatment: "Grass Ultra + Amsol",
-         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+  810: { Treatment: "Liberty Ultra, Section Three, Class Act NG, Amsol, + Strikelock",
+         "Liberty Ultra": "29 oz/ac", "Section Three": "3 oz/ac", "Class Act NG": "1.25%v/v", "Amsol": "75 oz/ac", "Strikelock": "10 oz/ac",
+         ChangeDetection: "..." },
 
   811: { Treatment: "Check",
-         notes: "" },
+         },
 };
 
 // Which GeoJSON property links a feature to plotCharacteristics above

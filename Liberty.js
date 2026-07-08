@@ -23,55 +23,55 @@ var rasterLayers = {};
 // ============================================================
 const plotCharacteristics = {
   737: { Treatment: "Check",
-         notes: "" },
+         },
 
   738: { Treatment: "Liberty Ultra + Amsol",
-         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+         "Liberty Ultra Rate": "24 oz/ac", "Amsol Rate": "57 oz/ac",
+         ChangeDetection: "83.4% Vegetation loss" },
 
   739: { Treatment: "Liberty Ultra + Amsol",
-         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 738" },
+         "Liberty Ultra Rate": "24 oz/ac", "Amsol Rate": "114 oz/ac",
+         ChangeDetection: "76.7% Vegetation loss" },
 
   740: { Treatment: "Check",
-         notes: "" },
+         },
 
   741: { Treatment: "Liberty Ultra + Class Act NG",
-         "Liberty Ultra Rate": "4.91 mL", "Class Act NG Rate": "6.55 mL",
-         notes: "" },
+         "Liberty Ultra Rate": "24 oz/ac", "Class Act NG Rate": "1 qt/ac",
+         ChangeDetection: "84.2% Vegetation loss" },
 
   742: { Treatment: "Liberty Ultra, Class Act NG + Strikelock",
-         "Liberty Ultra Rate": "6.55 mL", "Class Act NG Rate": "6.55 mL", "Strikelock Rate": "2.05 mL",
-         notes: "Added Strikelock" },
+         "Liberty Ultra Rate": "1 qt/ac", "Class Act NG Rate": "1 qt/ac", "Strikelock Rate": "10 oz/ac",
+         ChangeDetection: "81.3% Vegetation loss" },
 
   743: { Treatment: "Check",
-         notes: "" },
+          },
 
   744: { Treatment: "Liberty Ultra + Class Act NG",
-         "Liberty Ultra Rate": "4.91 mL", "Class Act NG Rate": "13.10 mL",
-         notes: "Twice as much Class Act NG rate compared to 741" },
+         "Liberty Ultra Rate": "24 oz/ac", "Class Act NG Rate": "2 pt/ac",
+         ChangeDetection: "67.7% Vegetation loss" },
 
   745: { Treatment: "Check",
-         notes: "" },
+          },
 
   746: { Treatment: "Liberty Ultra + AMS",
-         "Liberty Ultra Rate": "4.91 mL", "AMS Rate": "4.7 g",
-         notes: "" },
+         "Liberty Ultra Rate": "24 oz/ac", "AMS Rate": "1.5 lbs/ac",
+         ChangeDetection: "73.3% Vegetation loss" },
 
   747: { Treatment: "Liberty Ultra + Amsol",
-         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
-         notes: "" },
+         "Liberty Ultra Rate": "24 oz/ac", "Amsol Rate": "57 oz/ac",
+         ChangeDetection: "64.2% Vegetation loss" },
 
   748: { Treatment: "Check",
-         notes: "" },
+         },
 
   749: { Treatment: "Liberty Ultra + AMS",
-         "Liberty Ultra Rate": "4.91 mL", "AMS Rate": "9.4 g",
-         notes: "Twice as much AMS rate compared to 746" },
+         "Liberty Ultra Rate": "24 oz/ac", "AMS Rate": "3 lbs/ac",
+         ChangeDetection: "67.6% Vegetation loss" },
 
   750: { Treatment: "Liberty Ultra + Amsol",
-         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
-         notes: "Twice as much Amsol rate compared to 747" },
+         "Liberty Ultra Rate": "24 oz/ac", "Amsol Rate": "114 oz/ac",
+         ChangeDetection: "80.4% Vegetation loss" },
 };
 
 // Which GeoJSON property links a feature to plotCharacteristics above
