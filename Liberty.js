@@ -185,7 +185,7 @@ const LibertyDate1 = fetch('field_rasters/LakeVer/622026/Demo/Liberty/6226_Liber
   .catch(err => console.log('LibertyDate1 error:', err));
 
 // Load LibertyDate2 - assigned to a variable
-const LibertyDate2 = fetch('field_rasters/LakeVer/6152026/Demo/Liberty/61526_Liberty.TIF') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const LibertyDate2 = fetch('field_rasters/LakeVer/6152026/Demo/Liberty/61526_Liberty.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {
@@ -266,5 +266,3 @@ Promise.all([LibertyDate1, LibertyDate2]).then(() => {
 // perform a kriging interpolation on soil sample data and locations
 // add NDVI from pix4D and clip raster to field extent (might need to resample or figure out cloud storage)
 // export rasters inside of clip (both NDVI and pH) (from ArcGIS Pro save it outside of GDB and add .tif at the end)
-
-Liberty

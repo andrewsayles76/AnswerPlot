@@ -173,7 +173,7 @@ const GrassDate1 = fetch('field_rasters/LakeVer/622026/Demo/Grass/6226_Grass.tif
   .catch(err => console.log('GrassDate1 error:', err));
 
 // Load GrassDate2 - assigned to a variable
-const GrassDate2 = fetch('field_rasters/LakeVer/6152026/Demo/Grass/61526_Grass.TIF') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const GrassDate2 = fetch('field_rasters/LakeVer/6152026/Demo/Grass/61526_Grass.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {
@@ -254,5 +254,3 @@ Promise.all([GrassDate1, GrassDate2]).then(() => {
 // perform a kriging interpolation on soil sample data and locations
 // add NDVI from pix4D and clip raster to field extent (might need to resample or figure out cloud storage)
 // export rasters inside of clip (both NDVI and pH) (from ArcGIS Pro save it outside of GDB and add .tif at the end)
-
-Grass

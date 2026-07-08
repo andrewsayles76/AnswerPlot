@@ -148,5 +148,3 @@ Promise.all([AlfalfaDate1, AlfalfaDate2]).then(() => {
 // perform a kriging interpolation on soil sample data and locations
 // add NDVI from pix4D and clip raster to field extent (might need to resample or figure out cloud storage)
 // export rasters inside of clip (both NDVI and pH) (from ArcGIS Pro save it outside of GDB and add .tif at the end)
-
-Alfalfa
