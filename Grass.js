@@ -3,7 +3,7 @@ var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/
 });
 
 var map = L.map("map", {
-  center: [43.57070617955723, -97.18688749440282],
+  center: [43.568591915416704, -97.1869485880235],
   zoom: 18,
   minZoom: 18,
   maxZoom: 24,
@@ -12,17 +12,123 @@ var map = L.map("map", {
 
 var rasterLayers = {};
 
+// ============================================================
+// CUSTOM PLOT CHARACTERISTICS — EDIT THIS SECTION
+// Key each entry by the plot's PLOT number from the GeoJSON.
+// Add/remove any fields you want (variety, status, notes,
+// treatment, yield, etc.) — they'll show up automatically in
+// that plot's popup. Add a "color" field (hex or CSS color
+// name) to have that square shaded on the map; leave it out
+// and the plot just keeps the default outline styling.
+// ============================================================
+const plotCharacteristics = {
+  801: { Treatment: "Check",
+         notes: "" },
+
+  802: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
+         notes: "" },
+
+  803: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
+         notes: "Twice as much Amsol rate compared to 738" },
+
+  804: { Treatment: "Check",
+         notes: "" },
+  
+  805: { Treatment: "Check",
+         notes: "" },
+
+  806: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
+         notes: "" },
+
+  807: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
+         notes: "Twice as much Amsol rate compared to 738" },
+
+  808: { Treatment: "Check",
+         notes: "" },
+  
+  809: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
+         notes: "" },
+
+  810: { Treatment: "Grass Ultra + Amsol",
+         "Grass Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
+         notes: "Twice as much Amsol rate compared to 738" },
+
+  811: { Treatment: "Check",
+         notes: "" },
+};
+
+// Which GeoJSON property links a feature to plotCharacteristics above
+const PLOT_LINK_FIELD = "PLOT";
+
+function labelizeField(key) {
+  return key.replace(/_/g, ' ');
+}
+
+function buildPlotPopup(props, custom) {
+  let html = `<div class="popup-title">Range ${props.PLOT ?? props.PageName}</div>`;
+
+  if (custom) {
+    let customRows = "";
+    Object.keys(custom).forEach(k => {
+      if (k === "color") return; // drives styling, not shown as text
+      const val = custom[k];
+      if (val === undefined || val === "") return;
+      customRows += `<tr><td class="k">${labelizeField(k)}</td><td class="v">${val}</td></tr>`;
+    });
+    if (customRows) {
+      html += `<table class="popup-table">${customRows}</table>`;
+    }
+  }
+  return html;
+}
+
 // Load GeoJSON field boundary
 fetch('field_GEOJSON/demo_Grass.geojson')
   .then(res => res.json())
   .then(data => {
     boundaryLayer = L.geoJSON(data, {
-      style: {
-        color: '#000000',  
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0,
-        fillColor: '#ff6600'
+      style: function (feature) {
+        const key = feature.properties[PLOT_LINK_FIELD];
+        const custom = plotCharacteristics[key];
+        return {
+          color: '#000000',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: (custom && custom.color) ? 0.45 : 0,
+          fillColor: (custom && custom.color) ? custom.color : 'rgba(255, 102, 0, 0)'
+        };
+      },
+      onEachFeature: function (feature, layer) {
+        const key = feature.properties[PLOT_LINK_FIELD];
+        const custom = plotCharacteristics[key];
+        layer.bindPopup(buildPlotPopup(feature.properties, custom));
+
+        // Permanent label anchored to the top edge of the square
+        const topCenter = L.latLng(
+          layer.getBounds().getNorth(),
+          (layer.getBounds().getWest() + layer.getBounds().getEast()) / 2
+        );
+        L.tooltip({
+          permanent: true,
+          direction: 'top',
+          className: 'plot-label',
+          offset: [0, 0]
+        })
+          .setLatLng(topCenter)
+          .setContent(String(key ?? feature.properties.PageName))
+          .addTo(map);
+        
+        layer.on('mouseover', function () {
+          this.setStyle({ weight: 3, fillOpacity: (this.options.fillOpacity || 0) + 0.15 });
+        });
+        layer.on('mouseout', function () {
+          boundaryLayer.resetStyle(this);
+        });
       }
     }).addTo(map);
   })
@@ -149,3 +255,4 @@ Promise.all([GrassDate1, GrassDate2]).then(() => {
 // add NDVI from pix4D and clip raster to field extent (might need to resample or figure out cloud storage)
 // export rasters inside of clip (both NDVI and pH) (from ArcGIS Pro save it outside of GDB and add .tif at the end)
 
+Grass

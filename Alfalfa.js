@@ -3,7 +3,7 @@ var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/
 });
 
 var map = L.map("map", {
-  center: [43.57070617955723, -97.18688749440282],
+  center: [43.568591915416704, -97.1869485880235],
   zoom: 18,
   minZoom: 18,
   maxZoom: 24,

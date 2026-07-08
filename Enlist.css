@@ -117,3 +117,23 @@ body {
   color: white;
 }
 
+/* popup style */
+.popup-title { font-size: 15px; font-weight: 700; margin: 0 0 6px 0; color: #1f2937; }
+.popup-table { border-collapse: collapse; font-size: 13px; }
+.popup-table td { padding: 2px 8px 2px 0; vertical-align: top; }
+.popup-table td.k { color: #6b7280; font-weight: 600; white-space: nowrap; }
+.popup-table td.v { color: #111827; }
+.popup-custom { margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; }
+
+.plot-label {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111827;
+  padding: 1px 4px;
+}
+.plot-label::before {
+  display: none; /* removes the little tooltip arrow */
+}

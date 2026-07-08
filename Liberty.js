@@ -3,7 +3,7 @@ var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/
 });
 
 var map = L.map("map", {
-  center: [43.57070617955723, -97.18688749440282],
+  center: [43.568591915416704, -97.1869485880235],
   zoom: 18,
   minZoom: 18,
   maxZoom: 24,
@@ -12,17 +12,135 @@ var map = L.map("map", {
 
 var rasterLayers = {};
 
+// ============================================================
+// CUSTOM PLOT CHARACTERISTICS — EDIT THIS SECTION
+// Key each entry by the plot's PLOT number from the GeoJSON.
+// Add/remove any fields you want (variety, status, notes,
+// treatment, yield, etc.) — they'll show up automatically in
+// that plot's popup. Add a "color" field (hex or CSS color
+// name) to have that square shaded on the map; leave it out
+// and the plot just keeps the default outline styling.
+// ============================================================
+const plotCharacteristics = {
+  737: { Treatment: "Check",
+         notes: "" },
+
+  738: { Treatment: "Liberty Ultra + Amsol",
+         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
+         notes: "" },
+
+  739: { Treatment: "Liberty Ultra + Amsol",
+         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
+         notes: "Twice as much Amsol rate compared to 738" },
+
+  740: { Treatment: "Check",
+         notes: "" },
+
+  741: { Treatment: "Liberty Ultra + Class Act NG",
+         "Liberty Ultra Rate": "4.91 mL", "Class Act NG Rate": "6.55 mL",
+         notes: "" },
+
+  742: { Treatment: "Liberty Ultra, Class Act NG + Strikelock",
+         "Liberty Ultra Rate": "6.55 mL", "Class Act NG Rate": "6.55 mL", "Strikelock Rate": "2.05 mL",
+         notes: "Added Strikelock" },
+
+  743: { Treatment: "Check",
+         notes: "" },
+
+  744: { Treatment: "Liberty Ultra + Class Act NG",
+         "Liberty Ultra Rate": "4.91 mL", "Class Act NG Rate": "13.10 mL",
+         notes: "Twice as much Class Act NG rate compared to 741" },
+
+  745: { Treatment: "Check",
+         notes: "" },
+
+  746: { Treatment: "Liberty Ultra + AMS",
+         "Liberty Ultra Rate": "4.91 mL", "AMS Rate": "4.7 g",
+         notes: "" },
+
+  747: { Treatment: "Liberty Ultra + Amsol",
+         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "11.6 mL",
+         notes: "" },
+
+  748: { Treatment: "Check",
+         notes: "" },
+
+  749: { Treatment: "Liberty Ultra + AMS",
+         "Liberty Ultra Rate": "4.91 mL", "AMS Rate": "9.4 g",
+         notes: "Twice as much AMS rate compared to 746" },
+
+  750: { Treatment: "Liberty Ultra + Amsol",
+         "Liberty Ultra Rate": "4.91 mL", "Amsol Rate": "23.3 mL",
+         notes: "Twice as much Amsol rate compared to 747" },
+};
+
+// Which GeoJSON property links a feature to plotCharacteristics above
+const PLOT_LINK_FIELD = "PLOT";
+
+function labelizeField(key) {
+  return key.replace(/_/g, ' ');
+}
+
+function buildPlotPopup(props, custom) {
+  let html = `<div class="popup-title">Range ${props.PLOT ?? props.PageName}</div>`;
+
+  if (custom) {
+    let customRows = "";
+    Object.keys(custom).forEach(k => {
+      if (k === "color") return; // drives styling, not shown as text
+      const val = custom[k];
+      if (val === undefined || val === "") return;
+      customRows += `<tr><td class="k">${labelizeField(k)}</td><td class="v">${val}</td></tr>`;
+    });
+    if (customRows) {
+      html += `<table class="popup-table">${customRows}</table>`;
+    }
+  }
+  return html;
+}
+
 // Load GeoJSON field boundary
 fetch('field_GEOJSON/demo_Liberty.geojson')
   .then(res => res.json())
   .then(data => {
     boundaryLayer = L.geoJSON(data, {
-      style: {
-        color: '#000000',  
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0,
-        fillColor: '#ff6600'
+      style: function (feature) {
+        const key = feature.properties[PLOT_LINK_FIELD];
+        const custom = plotCharacteristics[key];
+        return {
+          color: '#000000',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: (custom && custom.color) ? 0.45 : 0,
+          fillColor: (custom && custom.color) ? custom.color : 'rgba(255, 102, 0, 0)'
+        };
+      },
+      onEachFeature: function (feature, layer) {
+        const key = feature.properties[PLOT_LINK_FIELD];
+        const custom = plotCharacteristics[key];
+        layer.bindPopup(buildPlotPopup(feature.properties, custom));
+
+        // Permanent label anchored to the top edge of the square
+        const topCenter = L.latLng(
+          layer.getBounds().getNorth(),
+          (layer.getBounds().getWest() + layer.getBounds().getEast()) / 2
+        );
+        L.tooltip({
+          permanent: true,
+          direction: 'top',
+          className: 'plot-label',
+          offset: [0, 0]
+        })
+          .setLatLng(topCenter)
+          .setContent(String(key ?? feature.properties.PageName))
+          .addTo(map);
+        
+        layer.on('mouseover', function () {
+          this.setStyle({ weight: 3, fillOpacity: (this.options.fillOpacity || 0) + 0.15 });
+        });
+        layer.on('mouseout', function () {
+          boundaryLayer.resetStyle(this);
+        });
       }
     }).addTo(map);
   })

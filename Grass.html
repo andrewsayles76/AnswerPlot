@@ -55,6 +55,29 @@
     </div>
   </nav>
     
+   <!-- Welcome / info modal, shown automatically on page load -->
+  <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="welcomeModalLabel">Welcome to the Answer Plot Explorer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>This map shows the Lake Vermillion trial plots for the Grass demo. Here's what you need to know:</p>
+          <ul>
+            <li>Click on any plot square to see its treatment, application rates, and notes.</li>
+            <li>Use the layer toggles on the right to switch between NDVI imagery dates.</li>
+            <li>Colors on the NDVI layers reflect plant health, from healthy (green) to stressed (red).</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
       <div id="map"></div>
 
   <!-- Map -->
@@ -63,20 +86,12 @@
   <div id="infoColumn" class="d-none d-lg-block position-absolute top-0 end-0" style="width: 20%; z-index: 10; margin-top: 60px;">
     <div class="card shadow-sm" style="background-color: rgb(40,40,40)">
       <div class="card-body" style="color: white">
-        <h5 class="card-title mb-3"><strong>Cropland Data</strong></h5>
-
-        <hr style="border-color: #777">
-
-<h5>Answer Plot Map</h5>
-<div class="form-check form-switch">
-  <input class="form-check-input" type="checkbox" id="toggle-boundary" checked>
-  <label class="form-check-label" for="toggle-boundary"></label>
-</div>
+        <h5 class="card-title mb-3"><strong>Corn Grass Control Demo</strong></h5>
         
          <hr style="border-color: #777">
       
       <!-- GrassDate legend toggle -->
-<h5>Map Layers</h5>
+<h5>NDVI Layers</h5>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="GrassDate1" id="toggleGrassDate1-desktop">
   <label class="form-check-label" for="toggleGrassDate1-desktop">GrassDate1</label>
@@ -97,10 +112,10 @@
     <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#a6d96a"></span> Moderate (0.2-0.4)
+    <span class="legend-swatch" style="background:#f1ffa4"></span> Moderate (0.2-0.4)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#ffffbf"></span> Low (0.1-0.2)
+    <span class="legend-swatch" style="background:#ffff2d"></span> Low (0.1-0.2)
   </div>
   <div class="legend-item">
     <span class="legend-swatch" style="background:#fdae61"></span> Very Low (0.0-0.1)
@@ -109,8 +124,12 @@
     <span class="legend-swatch" style="background:#d7191c"></span> Stressed/Bare 
   </div>
       </div>
-      <hr style="border-color: #777">
+      <hr style="border-color: #777"> 
+        
+      <h5>Weed Death (Change Detection)</h5>
+        <p>...</p>
       </div>
+      
   </div>
   </div>
 
@@ -123,7 +142,7 @@
 <!-- Offcanvas - only used on small screens -->
 <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="infoSidebar">
   <div class="offcanvas-header">
-    <h3 class="offcanvas-title" style="color: white"><strong>Cropland Data</strong></h3>
+    <h3 class="offcanvas-title" style="color: white"><strong>Corn Grass Control Demo</strong></h3>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body" style="color: white">
@@ -132,7 +151,7 @@
          <hr style="border-color: #777">
       
       <!-- GrassDate legend toggle MOBILE-->
-<h5>Map Layers</h5>
+<h5>NDVI Layers</h5>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="GrassDate1" id="toggleGrassDate1-mobile">
   <label class="form-check-label" for="toggleGrassDate1-mobile">GrassDate1</label>
@@ -141,9 +160,10 @@
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="GrassDate2" id="toggleGrassDate2-mobile">
   <label class="form-check-label" for="toggleGrassDate2-mobile">GrassDate2</label>
 </div>
-        <!--legend-->
+
+        <!--Legend-->
         <hr style="border-color: #777">
-        <h5>NDVI Legend</h5>
+        <h5>Plant Health (NDVI)</h5>
 <div class="ndvi-legend">
   <div class="legend-item">
     <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
@@ -164,20 +184,41 @@
     <span class="legend-swatch" style="background:#d7191c"></span> Stressed/Bare 
   </div>
       </div>
-   <hr style="border-color: #777">
+      <hr style="border-color: #777"> 
+        
+      <h5>Weed Death (Change Detection)</h5>
+        <p>...</p>
       </div>
+      
   </div>
-
         
     
         <div id="description">
-          <h6>How does this work?</h6>
-          <p>Click on the rectangles for treatment</p>
+          
+          <p>Click on the rectangles for treatment information!</p>
 
             
   </div>
     
  <script src="Grass.js"></script>   
         
+    <script>
+    // Show the welcome/info popup automatically when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      var welcomeModalEl = document.getElementById('welcomeModal');
+      var welcomeModal = new bootstrap.Modal(welcomeModalEl);
+      welcomeModal.show();
+ 
+      // Once the popup is closed (X, "Got it", backdrop click, or Escape),
+      // smoothly fly the map in to the field
+      welcomeModalEl.addEventListener('hidden.bs.modal', function () {
+        map.flyTo([43.56887846110949, -97.18858444416918], 22, {
+          duration: 2.5   // seconds — increase for a slower zoom, decrease for faster
+        });
+      });
+    });
+  </script>
+  
 </body>
 </html>
+H
