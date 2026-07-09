@@ -12,3 +12,12 @@
   border: 1px solid #777;
   border-radius: 6px;
 }
+
+body {
+  background-image: url('field_png/Weather.JPG');
+  background-size: cover;      /* scales image to cover the whole page */
+  background-position: center; /* keeps it centered */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* optional: keeps it static while scrolling */
+  min-height: 100vh;
+}

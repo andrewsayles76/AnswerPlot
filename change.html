@@ -185,7 +185,7 @@ var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/
 });
 
 var map = L.map("map", {
-  center: [43.568591915416704, -97.1869485880235],
+  center: [44.57112961996963, -96.0164010348873],
   zoom: 18,
   minZoom: 18,
   maxZoom: 24,
@@ -283,20 +283,35 @@ function formatThresh(v) {
   return n < 1 ? n.toFixed(2) : n.toFixed(3);
 }
 
-function sampleAbsMaxDiff(before, after) {
-  let maxAbs = 0;
+function sampleAbsDiffs(before, after, nodataB, nodataA) {
   const n = before.length;
   const step = Math.max(1, Math.floor(n / 20000)); // sample up to ~20k points for speed
+  const diffs = [];
   for (let i = 0; i < n; i += step) {
-    const d = Math.abs(after[i] - before[i]);
-    if (Number.isFinite(d) && d > maxAbs) maxAbs = d;
+    const bv = before[i], av = after[i];
+    if (nodataB !== null && bv === nodataB) continue;
+    if (nodataA !== null && av === nodataA) continue;
+    const d = Math.abs(av - bv);
+    if (Number.isFinite(d)) diffs.push(d);
   }
-  return maxAbs;
+  return diffs;
 }
 
+function percentile(sortedArr, p) {
+  if (sortedArr.length === 0) return 0;
+  const idx = Math.min(sortedArr.length - 1, Math.floor(p * sortedArr.length));
+  return sortedArr[idx];
+}
+
+let outlierGuardBound = Infinity; // set by autoScaleThreshold, reused during the full-resolution run
+
 function autoScaleThreshold() {
-  const maxAbs = sampleAbsMaxDiff(beforeRaster.data, afterRaster.data);
-  const sliderMax = maxAbs > 0 ? maxAbs : 1;
+  const diffs = sampleAbsDiffs(beforeRaster.data, afterRaster.data, beforeRaster.nodata, afterRaster.nodata);
+  const sorted = diffs.slice().sort((a, b) => a - b);
+  const rawMax = sorted.length ? sorted[sorted.length - 1] : 0;
+  const robust98 = percentile(sorted, 0.98);
+
+  const sliderMax = robust98 > 0 ? robust98 * 1.5 : 1; // headroom above the 98th percentile
   const slider = document.getElementById('threshSlider');
   const step = sliderMax / 200;
   const defaultVal = sliderMax * 0.15;
@@ -305,6 +320,15 @@ function autoScaleThreshold() {
   slider.step = step;
   slider.value = defaultVal;
   document.getElementById('threshVal').textContent = formatThresh(defaultVal);
+
+  // Guard against undeclared fill/sentinel values (e.g. -3.4e38) contaminating the full-res run.
+  // Anything absurdly larger than the bulk of real differences is treated as invalid, not "extreme change".
+  outlierGuardBound = robust98 > 0 ? robust98 * 50 : Infinity;
+
+  if (rawMax > robust98 * 10 && rawMax > 0) {
+    setStatus('Both rasters loaded (' + beforeRaster.width + '\u00d7' + beforeRaster.height + '). ' +
+      'Threshold auto-scaled using the typical range of your data (some extreme outlier values were detected and excluded \u2014 likely an undeclared NoData/fill value in one of your files; worth checking each raster\u2019s NoData setting).');
+  }
 }
 
 document.getElementById('runBtn').addEventListener('click', runChangeDetection);
@@ -368,7 +392,7 @@ function runChangeDetection() {
   const nodataB = beforeRaster.nodata, nodataA = afterRaster.nodata;
 
   diffArray = new Float32Array(nPixels);
-  let lossCount = 0, gainCount = 0, noChangeCount = 0, validCount = 0;
+  let lossCount = 0, gainCount = 0, noChangeCount = 0, validCount = 0, outlierCount = 0;
 
   for (let i = 0; i < nPixels; i++) {
     if ((nodataB !== null && before[i] === nodataB) || (nodataA !== null && after[i] === nodataA)) {
@@ -376,6 +400,11 @@ function runChangeDetection() {
       continue;
     }
     const d = after[i] - before[i];
+    if (Math.abs(d) > outlierGuardBound) {
+      diffArray[i] = NaN; // treat as undeclared fill/sentinel value, not real change
+      outlierCount++;
+      continue;
+    }
     diffArray[i] = d;
     validCount++;
     if (d <= -threshold) lossCount++;
@@ -424,7 +453,8 @@ function runChangeDetection() {
   document.getElementById('statPixels').textContent = validCount.toLocaleString();
 
   drawHistogram(diffArray, threshold, nPixels);
-  setStatus('Done. ' + validCount.toLocaleString() + ' valid pixels compared.');
+  setStatus('Done. ' + validCount.toLocaleString() + ' valid pixels compared.' +
+    (outlierCount > 0 ? (' ' + outlierCount.toLocaleString() + ' pixel(s) excluded as undeclared fill/sentinel values.') : ''));
 }
 
 function pct(n, total) {

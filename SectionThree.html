@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="GreenSnap.css" />
+  <link rel="stylesheet" href="SectionThree.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geometryutil/0.10.3/leaflet.geometryutil.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
@@ -56,7 +56,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="SummerStoriesDropdown">
                 <li><a class="dropdown-item" href="GreenSnap.html">Green Snap</a></li>
-                <li><a class="dropdown-item" href="GreenSnap.html">Section Three Experiment</a></li>
+                <li><a class="dropdown-item" href="SectionThree.html">Section Three Experiment</a></li>
             </ul>
           </li>
           
@@ -84,11 +84,14 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>This map shows the Minneota trial plots for the Green Snap Story. Here's what you need to know:</p>
+          <p>This map shows the Lake Vermillion trial plots for the Corn Grass Control Demo. Here's what you need to know:</p>
           <ul>
-            <li>Colors on the NDVI layers reflect the green snap, from healthy (green) to open canopy (yellow).</li>
-            <li>Within the plot square you can see the Relative Maturity.</li>
-            <li>Open canopy is caused by green snap is irregular while open canopy between range block are uniform. Try not to get them confused!</li>
+              <li>Our initail application of Section Three in the Grass Control Demo didn't work as intended.</li>
+              <li>We decided to compare applications against a new 2.5L jug of Section Three.</li>
+              <li>For this Experiment we applied Section Three at 10 oz/ac.</li>
+              <li>Images were collected 10 days apart. </li>
+                  <li>Change detection was perfromed to quantitate the results.</li>
+
           </ul>
         </div>
         <div class="modal-footer">
@@ -106,31 +109,60 @@
   <div id="infoColumn" class="d-none d-lg-block position-absolute top-0 end-0" style="width: 20%; z-index: 10; margin-top: 60px;">
     <div class="card shadow-sm" style="background-color: rgb(40,40,40)">
       <div class="card-body" style="color: white">
-        <h5 class="card-title mb-3"><strong>Green Snap Story</strong></h5>
+        <h5 class="card-title mb-3"><strong>Section Three Experiment</strong></h5>
         
+         <hr style="border-color: #777">
+      
+      <!-- SectionThreeSectionThree legend toggle -->
+<h5>NDVI Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="SectionThreeDate1" id="toggleSectionThreeDate1-desktop">
+  <label class="form-check-label" for="toggleSectionThreeDate1-desktop">SectionThreeDate1</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="SectionThreeDate2" id="toggleSectionThreeDate2-desktop">
+  <label class="form-check-label" for="toggleSectionThreeDate2-desktop">SectionThreeDate2</label>
+</div>
 
         <!--Legend-->
         <hr style="border-color: #777">
         <h5>Plant Health (NDVI)</h5>
 <div class="ndvi-legend">
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#1a9641"></span> Healthy
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#d7d319"></span> Open Canopy (≤0.45)
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#f1ffa4"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffff2d"></span> Low/Bare (0.1-0.2)
   </div>
       </div>
       <hr style="border-color: #777"> 
-    <h5>Green Snap</h5>
-          <p>High speed winds from the west caused 105-RM corn stalks to snap and die. 
-              Green snap can be seen as open canopy within rows. 
-                Large irregular areas of open canopy are caused by green snap. 
+             <h5>Experiment</h5>
+          <p>
+              Our initail application of Section Three in the Grass Control Demo didn't work as intended.
+              We decided to compare applications against a new 2.5L jug of Section Three.
+              For this Experiment we applied Section Three at 10 oz/ac.
+              Images were collected 10 days apart. Change detection was perfromed to quantitate the results.
           </p>
-            <hr style="border-color: #777"> 
-        </div>
+            <hr style="border-color: #777">
+           <h5>Change Detection</h5>
+          <p>
+            Initial  Bottle: 56.8% Vegetation loss
+          </p>
+          <p>
+            New 2.5L Jug: 60.1% Vegetation loss
+          </p>
+          <hr style="border-color: #777">
+          
+      </div>
+      
   </div>
-          </div>
-
+  </div>
 
 <!--small screens only
 <!-- Tab button - only shows on small screens -->
@@ -141,37 +173,64 @@
 <!-- Offcanvas - only used on small screens -->
 <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="infoSidebar">
   <div class="offcanvas-header">
-    <h3 class="offcanvas-title" style="color: white"><strong>Green Snap Story</strong></h3>
+    <h3 class="offcanvas-title" style="color: white"><strong>Section Three Experiment</strong></h3>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body" style="color: white">
+
+      
+         <hr style="border-color: #777">
+      
+      <!-- SectionThreeDate legend toggle MOBILE-->
+<h5>NDVI Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="SectionThreeDate1" id="toggleSectionThreeDate1-mobile">
+  <label class="form-check-label" for="toggleSectionThreeDate1-mobile">SectionThreeDate1</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="SectionThreeDate2" id="toggleSectionThreeDate2-mobile">
+  <label class="form-check-label" for="toggleSectionThreeDate2-mobile">SectionThreeDate2</label>
+</div>
 
         <!--Legend-->
         <hr style="border-color: #777">
         <h5>Plant Health (NDVI)</h5>
 <div class="ndvi-legend">
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#1a9641"></span> Healthy
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#d7d319"></span> Open Canopy (≤0.45)
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#f1ffa4"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffff2d"></span> Low/Bare (0.1-0.2)
   </div>
       </div>
       <hr style="border-color: #777"> 
-     <h5>Green Snap</h5>
-          <p>High speed winds from the west caused 105-RM corn stalks to snap and die. 
-              Green snap can be seen as open canopy within rows. 
-                Large irregular areas of open canopy are caused by green snap. 
+             <h5>Experiment</h5>
+          <p>
+              Our initail application of Section Three in the Grass Control Demo didn't work as intended.
+              We decided to compare applications against a new 2.5L jug of Section Three.
+              For this Experiment we applied Section Three at 10 oz/ac.
+              Images were collected 10 days apart. Change detection was perfromed to quantitate the results.
           </p>
-            <hr style="border-color: #777"> 
-        </div>
-  </div>
-
+            <hr style="border-color: #777">
+           <h5>Change Detection</h5>
+          <p>
+            Initial  Bottle: 56.8% Vegetation loss
+          </p>
+          <p>
+            New 2.5L Jug: 60.1% Vegetation loss
+          </p>
+          <hr style="border-color: #777">
+          
+      </div>
         
     
-
-    
- <script src="GreenSnap.js"></script>   
+ <script src="SectionThree.js"></script>   
         
     <script>
     // Show the welcome/info popup automatically when the page loads
@@ -183,12 +242,13 @@
       // Once the popup is closed (X, "Got it", backdrop click, or Escape),
       // smoothly fly the map in to the field
       welcomeModalEl.addEventListener('hidden.bs.modal', function () {
-        map.flyTo([44.57044680958545, -96.01640379603167], 20, {
-          duration: 2.5   // seconds — increase for a slower zoom, decrease for faster
+        map.flyTo([43.56887929622265, -97.18863550913521], 23, {
+          duration: 2.5   // seconds — increase for a sLow/Bareer zoom, decrease for faster
         });
       });
     });
   </script>
-  
+    </div>
 </body>
 </html>
+

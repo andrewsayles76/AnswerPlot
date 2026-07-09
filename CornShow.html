@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="GreenSnap.css" />
+  <link rel="stylesheet" href="CornShow.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geometryutil/0.10.3/leaflet.geometryutil.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
@@ -56,7 +56,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="SummerStoriesDropdown">
                 <li><a class="dropdown-item" href="GreenSnap.html">Green Snap</a></li>
-                <li><a class="dropdown-item" href="GreenSnap.html">Section Three Experiment</a></li>
+                <li><a class="dropdown-item" href="SectionThree.html">Section Three Experiment</a></li>
             </ul>
           </li>
           
@@ -75,29 +75,6 @@
     </div>
   </nav>
     
-   <!-- Welcome / info modal, shown automatically on page load -->
-  <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="welcomeModalLabel">Welcome to the Answer Plot Explorer</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>This map shows the Minneota trial plots for the Green Snap Story. Here's what you need to know:</p>
-          <ul>
-            <li>Colors on the NDVI layers reflect the green snap, from healthy (green) to open canopy (yellow).</li>
-            <li>Within the plot square you can see the Relative Maturity.</li>
-            <li>Open canopy is caused by green snap is irregular while open canopy between range block are uniform. Try not to get them confused!</li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
       <div id="map"></div>
 
   <!-- Map -->
@@ -106,31 +83,50 @@
   <div id="infoColumn" class="d-none d-lg-block position-absolute top-0 end-0" style="width: 20%; z-index: 10; margin-top: 60px;">
     <div class="card shadow-sm" style="background-color: rgb(40,40,40)">
       <div class="card-body" style="color: white">
-        <h5 class="card-title mb-3"><strong>Green Snap Story</strong></h5>
+        <h5 class="card-title mb-3"><strong>Cropland Data</strong></h5>
+
+        <hr style="border-color: #777">
+
+<h5>Answer Plot Map</h5>
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="toggle-boundary" checked>
+  <label class="form-check-label" for="toggle-boundary"></label>
+</div>
         
+         <hr style="border-color: #777">
+      
+      <!-- AlfaCornShowlfaDate legend toggle -->
+<h5>Map Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="CornShowDate1" id="toggleCornShowDate1-desktop">
+  <label class="form-check-label" for="toggleCornShowDate1-desktop">CornShowcaseDate1</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="CornShowDate2" id="toggleCornShowDate2-desktop">
+  <label class="form-check-label" for="toggleCornShowDate2-desktop">CornShowcaseDate2</label>
+</div>
 
         <!--Legend-->
         <hr style="border-color: #777">
         <h5>Plant Health (NDVI)</h5>
 <div class="ndvi-legend">
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#1a9641"></span> Healthy
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#d7d319"></span> Open Canopy (≤0.45)
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#a6d96a"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffffbf"></span> Low/Bare (0.1-0.2)
   </div>
       </div>
-      <hr style="border-color: #777"> 
-    <h5>Green Snap</h5>
-          <p>High speed winds from the west caused 105-RM corn stalks to snap and die. 
-              Green snap can be seen as open canopy within rows. 
-                Large irregular areas of open canopy are caused by green snap. 
-          </p>
-            <hr style="border-color: #777"> 
-        </div>
+      <hr style="border-color: #777">
+      </div>
   </div>
-          </div>
-
+  </div>
 
 <!--small screens only
 <!-- Tab button - only shows on small screens -->
@@ -141,54 +137,48 @@
 <!-- Offcanvas - only used on small screens -->
 <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="infoSidebar">
   <div class="offcanvas-header">
-    <h3 class="offcanvas-title" style="color: white"><strong>Green Snap Story</strong></h3>
+    <h3 class="offcanvas-title" style="color: white"><strong>Cropland Data</strong></h3>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
   </div>
   <div class="offcanvas-body" style="color: white">
 
-        <!--Legend-->
+      
+         <hr style="border-color: #777">
+      
+      <!-- CornShowDate legend toggle MOBILE-->
+<h5>Map Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="CornShowDate1" id="toggleCornShowDate1-mobile">
+  <label class="form-check-label" for="toggleCornShowDate1-mobile">CornShowDate1</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="CornShowDate2" id="toggleCornShowDate2-mobile">
+  <label class="form-check-label" for="toggleCornShowDate2-mobile">CornShowDate2</label>
+</div>
+        <!--legend-->
         <hr style="border-color: #777">
-        <h5>Plant Health (NDVI)</h5>
+        <h5>NDVI Legend</h5>
 <div class="ndvi-legend">
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#1a9641"></span> Healthy
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
   </div>
   <div class="legend-item">
-    <span class="legend-swatch" style="background:#d7d319"></span> Open Canopy (≤0.45)
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#f1ffa4"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffff2d"></span> Low/Bare (0.1-0.2)
   </div>
       </div>
-      <hr style="border-color: #777"> 
-     <h5>Green Snap</h5>
-          <p>High speed winds from the west caused 105-RM corn stalks to snap and die. 
-              Green snap can be seen as open canopy within rows. 
-                Large irregular areas of open canopy are caused by green snap. 
-          </p>
-            <hr style="border-color: #777"> 
-        </div>
+   <hr style="border-color: #777">
+      </div>
   </div>
 
-        
-    
 
     
- <script src="GreenSnap.js"></script>   
+ <script src="CornShow.js"></script>   
         
-    <script>
-    // Show the welcome/info popup automatically when the page loads
-    document.addEventListener('DOMContentLoaded', function () {
-      var welcomeModalEl = document.getElementById('welcomeModal');
-      var welcomeModal = new bootstrap.Modal(welcomeModalEl);
-      welcomeModal.show();
- 
-      // Once the popup is closed (X, "Got it", backdrop click, or Escape),
-      // smoothly fly the map in to the field
-      welcomeModalEl.addEventListener('hidden.bs.modal', function () {
-        map.flyTo([44.57044680958545, -96.01640379603167], 20, {
-          duration: 2.5   // seconds — increase for a slower zoom, decrease for faster
-        });
-      });
-    });
-  </script>
-  
 </body>
 </html>

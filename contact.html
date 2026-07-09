@@ -1,8 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Title</title>
-    </head>
-    <body></body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Answer Plot Explorer</title>
+   
+    <link rel="stylesheet" href="contact.css" />
+    
+<!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  
+  <!-- Make sure you put the leaflet map library AFTER Leaflet's CSS --> 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+       
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="about.css" />
+  
+</head>
+    
+<body class="bg-light">
+      
+<!-- Top bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-semibold">Answer Plot Explorer</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="about.html">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Demo Trials
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+              <li><a class="dropdown-item" href="Enlist.html">Enlist Demo</a></li>
+              <li><a class="dropdown-item" href="Liberty.html">Liberty Demo</a></li>
+              <li><a class="dropdown-item" href="Grass.html">Grass Control Demo</a></li>
+              <li><a class="dropdown-item" href="CornShow.html">Corn Showcase</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="SummerStoriesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Summer Stories
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="SummerStoriesDropdown">
+                <li><a class="dropdown-item" href="GreenSnap.html">Green Snap</a></li>
+                <li><a class="dropdown-item" href="SectionThree.html">Section Three Experiment</a></li>
+            </ul>
+          </li>
+          
+        <!-- Change detection -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="change.html">Change Detection</a>
+        </li>
+          
+                    <li class="nav-item">
+            <a class="nav-link fw-semibold" href="contact.html">Contact Me</a>
+          </li>
+          
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+<div class="creator-card">
+  <div class="creator-text">
+    <h4>Creator of this Website</h4>
+    <p class="name">Andrew Sayles</p>
+    <p>Position: Winfield United - Summer Research Technician</p>
+
+    <h4>More Questions Regarding Answer Plot Explorer?</h4>
+    <p>Email: andrewsayles76@gmail.com</p>
+    <p>Phone: 507-438-6244</p>
+  </div>
+
+  <img src="field_png/headshot.jpeg" alt="Photo of me" class="creator-photo">
+</div>
+    
+  
+</body>
 </html>
