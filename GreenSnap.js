@@ -70,7 +70,7 @@ L.control.locate().addTo(map);
 // historical weather?
 
 // Load Greensnap - assigned to a variable
-const GreenSnap = fetch('field_rasters/GreenSnap/MN_GreenSnap_NDVI.tif')
+const GreenSnap = fetch('field_rasters/GreenSnap/MN_GreenSnap_NDVI_Compressed.tif')
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {
