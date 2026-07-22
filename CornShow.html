@@ -47,7 +47,7 @@
               <li><a class="dropdown-item" href="Liberty.html">Liberty Demo</a></li>
               <li><a class="dropdown-item" href="Grass.html">Grass Control Demo</a></li>
               <li><a class="dropdown-item" href="CornShow.html">Corn Showcase</a></li>
-               <li><a class="dropdown-item" href="SoybeanShow.html">Soybean Showcase</a></li>
+            
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -76,7 +76,31 @@
     </div>
   </nav>
     
+     <!-- Welcome / info modal, shown automatically on page load -->
+  <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="welcomeModalLabel">Welcome to the Answer Plot Explorer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>This map shows the Lake Vermillion trial plots for the Corn Showcase Demo. Here's what you need to know:</p>
+          <ul>
+            <li>Use the layer toggles on the right to switch between NDVI imagery dates.</li>
+            <li>Colors on the NDVI layers reflect plant health, from healthy (green) to stressed (red). See Legend for more Information</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
       <div id="map"></div>
+
+
 
   <!-- Map -->
 
@@ -88,23 +112,16 @@
 
         <hr style="border-color: #777">
 
-<h5>Answer Plot Map</h5>
-<div class="form-check form-switch">
-  <input class="form-check-input" type="checkbox" id="toggle-boundary" checked>
-  <label class="form-check-label" for="toggle-boundary"></label>
-</div>
-        
-         <hr style="border-color: #777">
       
       <!-- AlfaCornShowlfaDate legend toggle -->
 <h5>Map Layers</h5>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="CornShowDate1" id="toggleCornShowDate1-desktop">
-  <label class="form-check-label" for="toggleCornShowDate1-desktop">CornShowcaseDate1</label>
+  <label class="form-check-label" for="toggleCornShowDate1-desktop">Corn Showcase 6/29/2026</label>
 </div>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="CornShowDate2" id="toggleCornShowDate2-desktop">
-  <label class="form-check-label" for="toggleCornShowDate2-desktop">CornShowcaseDate2</label>
+  <label class="form-check-label" for="toggleCornShowDate2-desktop">Corn Showcase 7/9/2026</label>
 </div>
 
         <!--Legend-->
@@ -150,11 +167,11 @@
 <h5>Map Layers</h5>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="CornShowDate1" id="toggleCornShowDate1-mobile">
-  <label class="form-check-label" for="toggleCornShowDate1-mobile">CornShowDate1</label>
+  <label class="form-check-label" for="toggleCornShowDate1-mobile">Corn Showcase 6/29/2026</label>
 </div>
 <div class="form-check">
   <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="CornShowDate2" id="toggleCornShowDate2-mobile">
-  <label class="form-check-label" for="toggleCornShowDate2-mobile">CornShowDate2</label>
+  <label class="form-check-label" for="toggleCornShowDate2-mobile">Corn Showcase 7/9/2026</label>
 </div>
         <!--legend-->
         <hr style="border-color: #777">
@@ -180,6 +197,23 @@
 
     
  <script src="CornShow.js"></script>   
+
+  <script>
+    // Show the welcome/info popup automatically when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      var welcomeModalEl = document.getElementById('welcomeModal');
+      var welcomeModal = new bootstrap.Modal(welcomeModalEl);
+      welcomeModal.show();
+
+      // Once the popup is closed (X, "Got it", backdrop click, or Escape),
+      // smoothly fly the map in to the field
+      welcomeModalEl.addEventListener('hidden.bs.modal', function () {
+        map.flyTo([43.568587463936645, -97.18847809866404], 20, {
+          duration: 2.5   // seconds — increase for a slower zoom, decrease for faster
+        });
+      });
+    });
+  </script>
         
 </body>
 </html>

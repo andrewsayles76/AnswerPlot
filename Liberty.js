@@ -41,7 +41,7 @@ const plotCharacteristics = {
          ChangeDetection: "84.2% Vegetation loss" },
 
   742: { Treatment: "Liberty Ultra, Class Act NG + Strikelock",
-         "Liberty Ultra Rate": "1 qt/ac", "Class Act NG Rate": "1 qt/ac", "Strikelock Rate": "10 oz/ac",
+         "Liberty Ultra Rate": "24 oz/ac", "Class Act NG Rate": "1 qt/ac", "Strikelock Rate": "10 oz/ac",
          ChangeDetection: "81.3% Vegetation loss" },
 
   743: { Treatment: "Check",

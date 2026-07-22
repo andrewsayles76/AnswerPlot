@@ -29,6 +29,23 @@ body {
     color: #ffffff;
 }
 
+/* Permanent labels showing DEMO_SUBTY above each plot polygon */
+.plot-label {
+  background: rgb(40, 40, 40);
+  color: #ffffff;
+  border: 1px solid #777;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+.leaflet-tooltip-top.plot-label::before {
+  border-top-color: rgb(40, 40, 40);
+}
+
 .leaflet-top.leaflet-left,
 .leaflet-top.leaflet-right {
   top: 60px;
@@ -116,4 +133,3 @@ body {
   background-color: rgb(40, 40, 40);
   color: white;
 }
-

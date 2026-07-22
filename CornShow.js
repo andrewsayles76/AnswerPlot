@@ -23,6 +23,19 @@ fetch('field_GEOJSON/demo_CornShow.geojson')
         opacity: 1,
         fillOpacity: 0,
         fillColor: '#ff6600'
+      },
+      onEachFeature: function(feature, layer) {
+        var label = feature.properties && feature.properties.DEMO_SUBTY
+          ? feature.properties.DEMO_SUBTY.trim()
+          : '';
+        if (label) {
+          layer.bindTooltip(label, {
+            permanent: true,
+            direction: 'top',
+            className: 'plot-label',
+            offset: [0, -4]
+          });
+        }
       }
     }).addTo(map);
   })
@@ -44,7 +57,7 @@ L.control.locate().addTo(map);
 // historical weather?
 
 // Load CornShowDate1 - assigned to a variable
-const CornShowDate1 = fetch('field_rasters/LakeVer/6152026/Demo/CornShow/61526_CornShow.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const CornShowDate1 = fetch('field_rasters/CornShowcase/c629NDVI_demo_corn_sc.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {
@@ -55,7 +68,7 @@ const CornShowDate1 = fetch('field_rasters/LakeVer/6152026/Demo/CornShow/61526_C
       pixelValuesToColorFn: function(values) {
         const v = values[0];
         if (v === georaster.noDataValue || v === null || v === -9999) return null;
-        if (v >= 0.7)  return '#1a9641'CornShow;
+        if (v >= 0.7)  return '#1a9641';
         if (v >= 0.5)  return '#74c476';
         if (v >= 0.3)  return '#f1ffa4';
         if (v >= 0.1)  return '#ffff2d';
@@ -67,7 +80,7 @@ const CornShowDate1 = fetch('field_rasters/LakeVer/6152026/Demo/CornShow/61526_C
   .catch(err => console.log('CornShowDate1 error:', err));
 
 // Load CornShowDate2 - assigned to a variable
-const CornShowDate2 = fetch('field_rasters/LakeVer/622026/Demo/CornShow/6226_CornShow.TIF') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
+const CornShowDate2 = fetch('field_rasters/CornShowcase/c79NDVI_demo_corn_sc.tif') //when saveing from ArcGIS Pro save it outside of GDB and add .tif at the end
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => parseGeoraster(arrayBuffer))
   .then(georaster => {

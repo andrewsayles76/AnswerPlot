@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Answer Plot Explorer</title>
+   
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="CornShow.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geometryutil/0.10.3/leaflet.geometryutil.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+  <script src="https://unpkg.com/georaster"></script>
+  <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
+</head>
+    
+<body class="bg-light">
+
+<!-- Top bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom sticky-top">
+    <div class="container-fluid">
+      <span class="navbar-brand fw-semibold">Answer Plot Explorer</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="about.html">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="propertiesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Demo Trials
+            </a>
+<ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+              <li><a class="dropdown-item" href="Enlist.html">Enlist Demo</a></li>
+              <li><a class="dropdown-item" href="Liberty.html">Liberty Demo</a></li>
+              <li><a class="dropdown-item" href="Grass.html">Grass Control Demo</a></li>
+              <li><a class="dropdown-item" href="CornShow.html">Corn Showcase</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-semibold" href="properties.html" id="SummerStoriesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Summer Stories
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="SummerStoriesDropdown">
+                <li><a class="dropdown-item" href="GreenSnap.html">Green Snap</a></li>
+                <li><a class="dropdown-item" href="SectionThree.html">Section Three Experiment</a></li>
+            </ul>
+          </li>
+          
+        <!-- Change detection -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="change.html">Change Detection</a>
+        </li>
+          
+                    <li class="nav-item">
+            <a class="nav-link fw-semibold" href="contact.html">Contact Me</a>
+          </li>
+          
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+    
+     <!-- Welcome / info modal, shown automatically on page load -->
+  <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="welcomeModalLabel">Welcome to the Answer Plot Explorer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>This map shows the Lake Vermillion trial plots for the Soybean Showcase Demo. Here's what you need to know:</p>
+          <ul>
+            <li>Use the layer toggles on the right to switch between NDVI imagery dates.</li>
+            <li>Colors on the NDVI layers reflect plant health, from healthy (green) to stressed (red). See Legend for more Information</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+      <div id="map"></div>
+
+
+
+  <!-- Map -->
+
+  <!-- Desktop sidebar -->
+  <div id="infoColumn" class="d-none d-lg-block position-absolute top-0 end-0" style="width: 20%; z-index: 10; margin-top: 60px;">
+    <div class="card shadow-sm" style="background-color: rgb(40,40,40)">
+      <div class="card-body" style="color: white">
+        <h5 class="card-title mb-3"><strong>Cropland Data</strong></h5>
+
+        <hr style="border-color: #777">
+
+      
+      <!-- Soybean legend toggle -->
+<h5>Map Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="SoybeanShowDate1" id="toggleSoybeanShowDate1-desktop">
+  <label class="form-check-label" for="toggleSoybeanShowDate1-desktop">Soybean Showcase 6/29/2026</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerDesktop" data-layer="SoybeanShowDate2" id="toggleSoybeanShowDate2-desktop">
+  <label class="form-check-label" for="toggleSoybeanShowDate2-desktop">Soybean Showcase 7/9/2026</label>
+</div>
+
+        <!--Legend-->
+        <hr style="border-color: #777">
+        <h5>Plant Health (NDVI)</h5>
+<div class="ndvi-legend">
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#a6d96a"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffffbf"></span> Low/Bare (0.1-0.2)
+  </div>
+      </div>
+      <hr style="border-color: #777">
+      </div>
+  </div>
+  </div>
+
+<!--small screens only
+<!-- Tab button - only shows on small screens -->
+<button class="sidebar-tab d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#infoSidebar">
+  Crop Data
+</button>
+
+<!-- Offcanvas - only used on small screens -->
+<div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="infoSidebar">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" style="color: white"><strong>Cropland Data</strong></h3>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body" style="color: white">
+
+      
+         <hr style="border-color: #777">
+      
+      <!-- Soybean legend toggle MOBILE-->
+<h5>Map Layers</h5>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="SoybeanShowDate1" id="toggleSoybeanShowDate1-mobile">
+  <label class="form-check-label" for="toggleSoybeanShowDate1-mobile">Soybean Showcase 6/29/2026</label>
+</div>
+<div class="form-check">
+  <input class="form-check-input layer-toggle" type="radio" name="mapLayerMobile" data-layer="SoybeanShowDate2" id="toggleSoybeanShowDate2-mobile">
+  <label class="form-check-label" for="toggleSoybeanShowDate2-mobile">Soybean Showcase 7/9/2026</label>
+</div>
+        <!--legend-->
+        <hr style="border-color: #777">
+        <h5>NDVI Legend</h5>
+<div class="ndvi-legend">
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#1a9641"></span> Healthy (≥0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#74c476"></span> Good (0.4-0.6)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#f1ffa4"></span> Moderate (0.2-0.4)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:#ffff2d"></span> Low/Bare (0.1-0.2)
+  </div>
+      </div>
+   <hr style="border-color: #777">
+      </div>
+  </div>
+
+
+    
+ <script src="CornShow.js"></script>   
+
+  <script>
+    // Show the welcome/info popup automatically when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      var welcomeModalEl = document.getElementById('welcomeModal');
+      var welcomeModal = new bootstrap.Modal(welcomeModalEl);
+      welcomeModal.show();
+
+      // Once the popup is closed (X, "Got it", backdrop click, or Escape),
+      // smoothly fly the map in to the field
+      welcomeModalEl.addEventListener('hidden.bs.modal', function () {
+        map.flyTo([43.568587463936645, -97.18847809866404], 20, {
+          duration: 2.5   // seconds — increase for a slower zoom, decrease for faster
+        });
+      });
+    });
+  </script>
+        
+</body>
+</html>
